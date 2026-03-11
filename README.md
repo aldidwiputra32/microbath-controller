@@ -1,20 +1,16 @@
----
-
 # Microbath Controller (ESP32)
 
 Firmware **ESP32-based Microbath Controller** untuk sistem monitoring dan kontrol berbasis IoT yang dilengkapi dengan:
 
-* Web Dashboard
-* WiFi Configuration
-* Blynk Cloud Integration
-* Dynamic Sensor Upload Interval
-* Persistent Configuration Storage (NVS)
-* mDNS Device Discovery
-* LittleFS Web Interface
+- Web Dashboard
+- WiFi Configuration
+- Blynk Cloud Integration
+- Dynamic Sensor Upload Interval
+- Persistent Configuration Storage (NVS)
+- mDNS Device Discovery
+- LittleFS Web Interface
 
 Project ini dirancang sebagai **firmware dasar untuk perangkat microbath / temperature control system** yang membutuhkan monitoring lokal melalui web dashboard serta monitoring jarak jauh melalui cloud.
-
----
 
 # Main Features
 
@@ -37,8 +33,6 @@ Lokasi file web:
 /data/app.js
 /data/index.min.css
 ```
-
----
 
 # WiFi System
 
@@ -73,8 +67,6 @@ File terkait:
 wifi.ino
 ```
 
----
-
 # Web Server
 
 Web server menggunakan **ESPAsyncWebServer** untuk performa yang lebih baik dibanding webserver standar.
@@ -106,8 +98,6 @@ File terkait:
 webserver.ino
 ```
 
----
-
 # Blynk Integration
 
 Firmware mendukung integrasi dengan **Blynk IoT platform** untuk monitoring cloud.
@@ -126,8 +116,6 @@ File terkait:
 ```
 blynk_handler.ino
 ```
-
----
 
 # Sensor System
 
@@ -156,8 +144,6 @@ File terkait:
 sensor.ino
 ```
 
----
-
 # Memory Storage
 
 Parameter perangkat disimpan menggunakan **ESP32 Preferences (NVS)** sehingga tetap tersimpan setelah restart.
@@ -183,8 +169,6 @@ File terkait:
 memory.ino
 ```
 
----
-
 # mDNS Support
 
 Device dapat diakses melalui hostname tanpa mengetahui IP address.
@@ -202,8 +186,6 @@ File terkait:
 ```
 mdns.ino
 ```
-
----
 
 # Project Structure
 
@@ -225,8 +207,6 @@ microbath_controller
     └── index.min.css
 ```
 
----
-
 # Default Configuration
 
 Default parameter pada firmware:
@@ -241,8 +221,6 @@ Default parameter pada firmware:
 ```
 
 Parameter ini dapat diubah melalui dashboard web.
-
----
 
 # Upload Web Files
 
@@ -260,8 +238,6 @@ Folder yang akan diupload:
 /data
 ```
 
----
-
 # Required Libraries
 
 Pastikan library berikut sudah terinstall di Arduino IDE:
@@ -276,8 +252,6 @@ LittleFS
 Preferences
 ```
 
----
-
 # Typical Workflow
 
 1. Flash firmware ke ESP32
@@ -289,8 +263,6 @@ Preferences
    - Web dashboard
    - Blynk cloud
 
----
-
 # Example Applications
 
 Firmware ini cocok digunakan untuk:
@@ -301,8 +273,4 @@ Firmware ini cocok digunakan untuk:
 - Remote temperature monitoring
 - Embedded web-enabled controller
 
----
-
 Firmware developed for **ESP32 Microbath Controller System**
-
----
