@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calibration System</title>
+    <link rel="stylesheet" href="index.min.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header class="navbar-esp">
+      <a class="navbar-brand-esp" href="#">
+        <div class="brand-icon">
+          <!-- CPU icon -->
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="#3b82f6"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="4" y="4" width="16" height="16" rx="2" />
+            <rect x="9" y="9" width="6" height="6" />
+            <line x1="9" y1="1" x2="9" y2="4" />
+            <line x1="15" y1="1" x2="15" y2="4" />
+            <line x1="9" y1="20" x2="9" y2="23" />
+            <line x1="15" y1="20" x2="15" y2="23" />
+            <line x1="20" y1="9" x2="23" y2="9" />
+            <line x1="20" y1="14" x2="23" y2="14" />
+            <line x1="1" y1="9" x2="4" y2="9" />
+            <line x1="1" y1="14" x2="4" y2="14" />
+          </svg>
+        </div>
+        Calibration System
+      </a>
+      <div class="status-badge" id="statusBadge">
+        <div class="status-dot" id="statusDot"></div>
+        <span id="statusText">Offline</span>
+      </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('home', this)">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+        Home
+      </button>
+      <button class="tab-btn" onclick="switchTab('settings', this)">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="3" />
+          <path
+            d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+          />
+        </svg>
+        Settings
+      </button>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- HOME TAB -->
+      <div class="tab-pane active" id="tab-home">
+        <!-- Not connected warning -->
+        <div id="offlineWarning" class="alert-warning-esp mb-3">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          Device not connected to WiFi. Go to <strong>Settings</strong> to
+          configure.
+        </div>
+
+        <!-- Stat Cards -->
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-label">IP Address</div>
+            <div class="stat-value" id="statIP" style="font-size: 0.9rem">
+              —
+            </div>
+            <div class="stat-sub">Local network</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Signal (RSSI)</div>
+            <div class="stat-value" id="statRSSI">—</div>
+            <div class="stat-sub">
+              <div class="signal-bars" id="signalBars">
+                <span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+          <div class="stat-card hidden">
+            <div class="stat-label">Uptime</div>
+            <div class="stat-value" id="statUptime">00:00:00</div>
+            <div class="stat-sub">Since last boot</div>
+          </div>
+          <div class="stat-card hidden">
+            <div class="stat-label">Free Heap</div>
+            <div class="stat-value" id="statHeap">—</div>
+            <div class="stat-sub">Memory available</div>
+          </div>
+        </div>
+
+        <!-- Device Info -->
+        <div class="esp-card">
+          <div class="card-header-esp">
+            <div class="card-icon">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#3b82f6"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            </div>
+            <h2 class="card-title">Device Info</h2>
+          </div>
+          <table class="info-table">
+            <tr>
+              <td>Device Name</td>
+              <td id="infoName">ESP32-Device</td>
+            </tr>
+            <tr>
+              <td>MAC Address</td>
+              <td id="infoMAC">00:00:00:00:00:00</td>
+            </tr>
+            <tr>
+              <td>Firmware</td>
+              <td id="infoFW">v0.0.0</td>
+            </tr>
+            <tr>
+              <td>Connected SSID</td>
+              <td id="infoSSID">—</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <!-- END HOME TAB -->
+
+      <!-- SETTINGS TAB -->
+      <div class="tab-pane" id="tab-settings">
+        <div class="row g-3">
+          <!-- WiFi Setup -->
+          <div class="col-12 col-md-6">
+            <div class="esp-card h-100">
+              <div class="card-header-esp">
+                <div class="card-icon">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#3b82f6"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M5 12.55a11 11 0 0 1 14.08 0" />
+                    <path d="M1.42 9a16 16 0 0 1 21.16 0" />
+                    <path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
+                    <line x1="12" y1="20" x2="12.01" y2="20" />
+                  </svg>
+                </div>
+                <h2 class="card-title">WiFi Setup</h2>
+              </div>
+
+              <form id="wifiForm" onsubmit="connectWifi(event)">
+                <div class="mb-3">
+                  <label class="form-label-esp" for="wifiSsid"
+                    >Network Name (SSID)</label
+                  >
+                  <input
+                    id="wifiSsid"
+                    type="text"
+                    class="form-control-esp"
+                    placeholder="Enter WiFi name"
+                    autocomplete="off"
+                  />
+                  <div class="form-hint">
+                    Use 2.4GHz network for best compatibility
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label-esp" for="wifiPass">Password</label>
+                  <div class="input-wrap">
+                    <input
+                      id="wifiPass"
+                      type="password"
+                      class="form-control-esp"
+                      placeholder="Enter password"
+                      autocomplete="off"
+                    />
+                    <button
+                      type="button"
+                      class="toggle-pw"
+                      onclick="togglePassword()"
+                    >
+                      <svg
+                        id="eyeIcon"
+                        width="15"
+                        height="15"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"
+                        />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div class="form-hint">WPA2-PSK security recommended</div>
+                </div>
+
+                <div id="wifiSuccess" class="alert-success-esp mb-3 hidden">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                  Connected successfully!
+                </div>
+
+                <div class="row g-2">
+                  <div class="col-6">
+                    <button
+                      type="button"
+                      class="btn-outline-esp"
+                      id="scanBtn"
+                      onclick="scanNetworks()"
+                    >
+                      <svg
+                        width="13"
+                        height="13"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <polyline points="1 4 1 10 7 10" />
+                        <path d="M3.51 15a9 9 0 1 0 .49-3.5" />
+                      </svg>
+                      Scan
+                    </button>
+                  </div>
+                  <div class="col-6">
+                    <button
+                      type="submit"
+                      class="btn-primary-esp"
+                      id="connectBtn"
+                    >
+                      Connect
+                    </button>
+                  </div>
+                </div>
+              </form>
+
+              <!-- Scan Results -->
+              <div id="scanResults" class="hidden">
+                <div class="scan-list" id="scanList"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Parameter Settings -->
+          <div class="col-12 col-md-6">
+            <div class="esp-card h-100">
+              <div class="card-header-esp">
+                <div class="card-icon">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#3b82f6"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="4" y1="21" x2="4" y2="14" />
+                    <line x1="4" y1="10" x2="4" y2="3" />
+                    <line x1="12" y1="21" x2="12" y2="12" />
+                    <line x1="12" y1="8" x2="12" y2="3" />
+                    <line x1="20" y1="21" x2="20" y2="16" />
+                    <line x1="20" y1="12" x2="20" y2="3" />
+                    <line x1="1" y1="14" x2="7" y2="14" />
+                    <line x1="9" y1="8" x2="15" y2="8" />
+                    <line x1="17" y1="16" x2="23" y2="16" />
+                  </svg>
+                </div>
+                <h2 class="card-title">Parameter Settings</h2>
+              </div>
+
+              <form id="paramForm" onsubmit="saveParams(event)">
+                <div class="mb-3">
+                  <label class="form-label-esp" for="interval"
+                    >Upload Fast Interval (seconds)</label
+                  >
+                  <input
+                    id="fastInterval"
+                    type="number"
+                    class="form-control-esp"
+                    value="5"
+                    min="5"
+                    max="3600"
+                  />
+                  <div class="form-hint">
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      style="display: inline; vertical-align: middle"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    How often data is sent to server
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label-esp" for="retry"
+                    >Upload Slow Interval (seconds)</label
+                  >
+                  <input
+                    id="slowInterval"
+                    type="number"
+                    class="form-control-esp"
+                    value="300"
+                    min="5"
+                    max="3600"
+                  />
+                  <div class="form-hint">
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      style="display: inline; vertical-align: middle"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    How often data is sent to server
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label-esp" for="timeout"
+                    >Retry Count</label
+                  >
+                  <input
+                    id="retry"
+                    type="number"
+                    class="form-control-esp"
+                    value="10"
+                    min="1"
+                    max="10"
+                  />
+                  <div class="form-hint">
+                    <svg
+                      width="11"
+                      height="11"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      style="display: inline; vertical-align: middle"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                    Number of retry attempts on failure
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label-esp" for="serverUrl"
+                    >Auth Token</label
+                  >
+                  <input
+                    id="authToken"
+                    type="text"
+                    class="form-control-esp"
+                    placeholder="Enter auth token"
+                  />
+                  <div class="form-hint">token for integrate to server</div>
+                </div>
+
+                <button type="submit" class="btn-primary-esp" id="saveBtn">
+                  <svg
+                    width="13"
+                    height="13"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                    />
+                    <polyline points="17 21 17 13 7 13 7 21" />
+                    <polyline points="7 3 7 8 15 8" />
+                  </svg>
+                  Save Settings
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- END SETTINGS TAB -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-esp">
+      <div class="footer-item">
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="4" y="4" width="16" height="16" rx="2" />
+          <rect x="9" y="9" width="6" height="6" />
+          <line x1="9" y1="1" x2="9" y2="4" />
+          <line x1="15" y1="1" x2="15" y2="4" />
+          <line x1="9" y1="20" x2="9" y2="23" />
+          <line x1="15" y1="20" x2="15" y2="23" />
+          <line x1="20" y1="9" x2="23" y2="9" />
+          <line x1="20" y1="14" x2="23" y2="14" />
+          <line x1="1" y1="9" x2="4" y2="9" />
+          <line x1="1" y1="14" x2="4" y2="14" />
+        </svg>
+        Firmware: <strong id="fwVersion">v2.1.4</strong>
+      </div>
+      <div class="footer-item">
+        <svg
+          width="13"
+          height="13"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="4" y1="9" x2="20" y2="9" />
+          <line x1="4" y1="15" x2="20" y2="15" />
+          <line x1="10" y1="3" x2="8" y2="21" />
+          <line x1="16" y1="3" x2="14" y2="21" />
+        </svg>
+        MAC: <strong id="macAddr">A4:CF:12:B3:7E:91</strong>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
